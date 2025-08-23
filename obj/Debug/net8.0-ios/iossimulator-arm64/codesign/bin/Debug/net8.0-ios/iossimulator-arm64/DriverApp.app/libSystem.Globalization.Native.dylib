@@ -1,0 +1,1 @@
+-v --force --timestamp=none --sign - /Users/macbookpro/Projects/DriverApp/bin/Debug/net8.0-ios/iossimulator-arm64/DriverApp.app/libSystem.Globalization.Native.dylib

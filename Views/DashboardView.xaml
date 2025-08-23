@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:DriverApp.Views"
+             x:Class="DriverApp.Views.DashboardView"
+             BackgroundColor="White">
+
+    <Grid RowDefinitions="*,70">
+        <!-- Main Content Area -->
+        <ContentView x:Name="MainContent" Grid.Row="0" />
+
+        <!-- Bottom Tab Bar -->
+        <Grid Grid.Row="1" BackgroundColor="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Home Tab -->
+            <StackLayout Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnHomeTapped"/>
+                </StackLayout.GestureRecognizers>
+                <Image x:Name="HomeIcon" Source="dotnet_bot.png" HeightRequest="24" WidthRequest="24"/>
+                <Label Text="Home" FontSize="12" HorizontalOptions="Center"/>
+                <BoxView x:Name="HomeIndicator" HeightRequest="2" BackgroundColor="Transparent" 
+                         HorizontalOptions="Fill"/>
+            </StackLayout>
+
+            <!-- Earnings Tab -->
+            <StackLayout Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEarningsTapped"/>
+                </StackLayout.GestureRecognizers>
+                <Image x:Name="EarningsIcon" Source="dotnet_bot.png" HeightRequest="24" WidthRequest="24"/>
+                <Label Text="Earnings" FontSize="12" HorizontalOptions="Center"/>
+                <BoxView x:Name="EarningsIndicator" HeightRequest="2" BackgroundColor="Transparent" 
+                         HorizontalOptions="Fill"/>
+            </StackLayout>
+
+            <!-- Wallet Tab -->
+            <StackLayout Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnWalletTapped"/>
+                </StackLayout.GestureRecognizers>
+                <Image x:Name="WalletIcon" Source="dotnet_bot.png" HeightRequest="24" WidthRequest="24"/>
+                <Label Text="Wallet" FontSize="12" HorizontalOptions="Center"/>
+                <BoxView x:Name="WalletIndicator" HeightRequest="2" BackgroundColor="Transparent" 
+                         HorizontalOptions="Fill"/>
+            </StackLayout>
+
+            <!-- Account Tab -->
+            <StackLayout Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" Padding="10">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAccountTapped"/>
+                </StackLayout.GestureRecognizers>
+                <Image x:Name="AccountIcon" Source="dotnet_bot.png" HeightRequest="24" WidthRequest="24"/>
+                <Label Text="Account" FontSize="12" HorizontalOptions="Center"/>
+                <BoxView x:Name="AccountIndicator" HeightRequest="2" BackgroundColor="Transparent" 
+                         HorizontalOptions="Fill"/>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

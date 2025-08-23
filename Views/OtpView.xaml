@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:DriverApp.ViewModels"
+             x:Class="DriverApp.Views.OtpView"
+             Title="OTP Verification">
+
+    <ContentPage.BindingContext>
+        <viewmodels:OtpViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid Padding="20" RowDefinitions="Auto,Auto,Auto,*">
+
+        <!-- Header -->
+        <Label Text="Enter OTP"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Margin="0,20,0,10"/>
+
+        <!-- OTP Entry -->
+        <Entry Grid.Row="1"
+               Text="{Binding otp, Mode=TwoWay}"
+               Placeholder="Enter OTP"
+               Keyboard="Numeric"
+               MaxLength="4"
+               VerticalOptions="Center"/>
+
+        <!-- Verify Button -->
+        <Button Grid.Row="2"
+                Text="Verify OTP"
+                BackgroundColor="{StaticResource PrimaryBlue}"
+                Command="{Binding VerifyOtpCommand}"
+                Margin="0,20,0,0"/>
+
+                <!-- <Button Text="Generate OTP"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                CornerRadius="8"
+                HeightRequest="45"
+                Margin="0,20,0,0"
+                Command="{Binding LoginCommand}" /> -->
+
+        <!-- Loader -->
+        <ActivityIndicator Grid.Row="3"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="Blue"
+                           WidthRequest="40"
+                           HeightRequest="40"/>
+    </Grid>
+</ContentPage>

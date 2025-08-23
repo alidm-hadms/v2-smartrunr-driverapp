@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DriverApp</name>
+    </assembly>
+    <members>
+        <member name="M:DriverApp.Helpers.NavigationHelper.RegisterAllRoutes">
+            <summary>
+            Registers all Page types in all loaded assemblies for Shell navigation.
+            Call this once during app startup (e.g., in App.xaml.cs).
+            </summary>
+        </member>
+    </members>
+</doc>

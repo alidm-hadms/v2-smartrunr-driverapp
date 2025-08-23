@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "691330987116",
+    "project_id": "smartrunr-1291f",
+    "storage_bucket": "smartrunr-1291f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691330987116:android:f6360c005401cbf52bd449",
+        "android_client_info": {
+          "package_name": "com.SmartrunR"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJGzGMlkcai68tz26bnxFAwhIfDRKSIMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

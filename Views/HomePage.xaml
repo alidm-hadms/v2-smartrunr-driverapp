@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DriverApp.Views.HomePage"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Padding="15" Spacing="20">
+
+        <!-- Duty Toggle -->
+        <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start">
+            <Label Text="Status:" 
+                   FontSize="18" 
+                   VerticalOptions="Center"/>
+            <Switch x:Name="DutySwitch" 
+                    Grid.Column="1"
+                    Toggled="OnDutySwitchToggled"/>
+        </Grid>
+
+        <!-- Duty Status Label -->
+        <Label x:Name="DutyStatusLabel"
+               Text="Currently Off Duty"
+               FontSize="16"
+               TextColor="Red"
+               HorizontalOptions="Center"/>
+
+        <!-- Table Header -->
+        <Grid Padding="5" ColumnDefinitions="2*,*,*" BackgroundColor="#eeeeee">
+            <Label Text="Task" FontAttributes="Bold" />
+            <Label Text="Hours" FontAttributes="Bold" Grid.Column="1" HorizontalOptions="Center"/>
+            <Label Text="Earnings" FontAttributes="Bold" Grid.Column="2" HorizontalOptions="End"/>
+        </Grid>
+
+        <!-- Table Data -->
+        <CollectionView x:Name="TaskCollection">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="5" ColumnDefinitions="2*,*,*">
+                        <Label Text="{Binding Task}" />
+                        <Label Text="{Binding Hours}" Grid.Column="1" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Earnings}" Grid.Column="2" HorizontalOptions="End"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentView>

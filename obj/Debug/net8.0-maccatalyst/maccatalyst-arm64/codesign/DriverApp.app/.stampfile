@@ -1,0 +1,1 @@
+-v --force --timestamp=none --sign - --entitlements /Users/macbookpro/Projects/DriverApp/obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/Entitlements.xcent /Users/macbookpro/Projects/DriverApp/bin/Debug/net8.0-maccatalyst/maccatalyst-arm64/DriverApp.app
