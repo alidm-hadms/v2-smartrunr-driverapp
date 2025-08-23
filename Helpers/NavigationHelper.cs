@@ -62,7 +62,7 @@ namespace DriverApp.Helpers
         public static async Task NavigateToOtpView()
         {
             //await Shell.Current.GoToAsync($"//{nameof(OtpView)}"); // With out back navigation
-            await Shell.Current.GoToAsync(nameof(OtpView)); 
+            await Shell.Current.GoToAsync(nameof(OtpView));
         }
         // public static async Task NavigateToDashboard()
         // {
@@ -87,6 +87,20 @@ namespace DriverApp.Helpers
             // Replace MainPage entirely so DashboardView is root, no back navigation possible
             Application.Current.MainPage = new NavigationPage(new DashboardView());
         }
+
+        public static async Task NavigateToOrderDetails(string bookingRef)
+        {
+            if (Shell.Current != null)
+            {
+                await Shell.Current.GoToAsync($"{nameof(OrderDetailsPage)}?bookingRefNumber={bookingRef}");
+            }
+            else
+            {
+                Application.Current.MainPage = new NavigationPage(new OrderDetailsPage(bookingRef));
+            }
+            
+        }
+
 
             
     }

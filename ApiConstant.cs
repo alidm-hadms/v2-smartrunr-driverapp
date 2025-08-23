@@ -15,6 +15,7 @@ namespace DriverApp
             public const string DayOrderHistory = "DriverApp/day-order-history";
             public const string WeeklyOrderHistory = "DriverApp/weekly-order-history";
             public const string MonthlyOrderHistory = "DriverApp/monthly-order-history";
+            public const string OrderSummaryDetails = "DriverApp/order-summary";
         }
     }
 

@@ -72,6 +72,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.LoginView.
 build_metadata.AdditionalFiles.TargetPath = Views/LoginView.xaml
 build_metadata.AdditionalFiles.RelativePath = Views/LoginView.xaml
 
+[/Users/macbookpro/Projects/DriverApp/Views/OrderDetailsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.OrderDetailsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views/OrderDetailsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views/OrderDetailsPage.xaml
+
 [/Users/macbookpro/Projects/DriverApp/Views/OtpView.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.OtpView.xaml

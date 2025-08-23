@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using DriverApp.Models;
+using DriverApp.Views;
+using DriverApp.Helpers;
 
 namespace DriverApp.ViewModels
 {
@@ -37,8 +39,6 @@ namespace DriverApp.ViewModels
             }
         }
 
-        
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
@@ -46,24 +46,28 @@ namespace DriverApp.ViewModels
         }
     }
 
-    
-
-    public class OrderItem
-    {
-        public string? BookingRefNumber { get; set; }
-        public string? Date { get; set; }
-        public string? Time { get; set; }
-        public decimal Amount { get; set; }
-        public string? PickupPoint { get; set; }
-        public string? Destination { get; set; }
-        public string? Status { get; set; }
-        public bool IsMiddleDrops { get; set; }
-    }
-
     public class EarningsViewModel : INotifyPropertyChanged
     {
+        private string _selectedOrderHistoryType = "Completed"; // ✅ default
         private DateRangeItem _selectedRange;
         private ObservableCollection<OrderItem> _orders;
+
+        public ICommand OrderTappedCommand { get; }
+        public ICommand ChangeOrderTypeCommand { get; }
+
+        public string SelectedOrderHistoryType
+        {
+            get => _selectedOrderHistoryType;
+            set
+            {
+                if (_selectedOrderHistoryType != value)
+                {
+                    _selectedOrderHistoryType = value;
+                    OnPropertyChanged();
+                    _ = FetchOrdersAsync(); // refresh orders when tab changes
+                }
+            }
+        }
 
         public ObservableCollection<DateRangeItem> DateRanges { get; set; }
         public ObservableCollection<OrderItem> Orders
@@ -124,13 +128,38 @@ namespace DriverApp.ViewModels
             return true;
         }
 
-
         public EarningsViewModel()
         {
+            // 🔹 Command to change order type (Completed, Cancelled, etc.)
+            ChangeOrderTypeCommand = new Command<string>(type =>
+            {
+                SelectedOrderHistoryType = type;
+            });
+
+            // 🔹 Command to handle tapping an order
+            OrderTappedCommand = new Command<OrderItem>(async (order) =>
+            {
+                if (order == null) return;
+
+                string bookingRef = order.bookingrefnumber;
+
+                 await NavigationHelper.NavigateToOrderDetails(bookingRef);
+
+                // if (Shell.Current != null)
+                // {
+                //     await Shell.Current.GoToAsync($"{nameof(OrderDetailsPage)}?bookingRefNumber={bookingRef}");
+                // }
+                // else
+                // {
+                //     Application.Current.MainPage = new NavigationPage(new OrderDetailsPage(bookingRef));
+                // }
+            });
+
             LoadDayRanges(); // default
         }
 
-        // Load Days
+        #region Load Ranges (Day, Week, Month)
+
         public void LoadDayRanges()
         {
             DateRanges = new ObservableCollection<DateRangeItem>();
@@ -151,7 +180,6 @@ namespace DriverApp.ViewModels
             OnPropertyChanged(nameof(DateRanges));
         }
 
-        // Load Weeks
         public void LoadWeekRanges()
         {
             DateRanges = new ObservableCollection<DateRangeItem>();
@@ -176,7 +204,6 @@ namespace DriverApp.ViewModels
             OnPropertyChanged(nameof(DateRanges));
         }
 
-        // Load Months
         public void LoadMonthRanges()
         {
             DateRanges = new ObservableCollection<DateRangeItem>();
@@ -199,7 +226,10 @@ namespace DriverApp.ViewModels
             OnPropertyChanged(nameof(DateRanges));
         }
 
-        // API Call
+        #endregion
+
+        #region API Call
+
         private async Task FetchOrdersAsync()
         {
             if (SelectedRange == null) return;
@@ -207,7 +237,7 @@ namespace DriverApp.ViewModels
             try
             {
                 using var client = new HttpClient();
-                client.BaseAddress = new Uri(ApiConfig.BaseUrl); // ✅ Environment-based BaseUrl
+                client.BaseAddress = new Uri(ApiConfig.BaseUrl);
 
                 string jsonBody = "";
                 string endpoint = "";
@@ -217,9 +247,9 @@ namespace DriverApp.ViewModels
                     endpoint = ApiConstant.Auth.DayOrderHistory;
                     jsonBody = JsonConvert.SerializeObject(new
                     {
-                        driverMobileNumber = "9743375766",
+                        driverMobileNumber = AppState.currentDriverMobileNumber,
                         date = SelectedRange.Date,
-                        orderHistoryType = SelectedRange.orderHistoryType //"Completed"
+                        orderHistoryType = SelectedOrderHistoryType
                     });
                 }
                 else if (SelectedRange.StartDate != default && SelectedRange.EndDate != default) // Week
@@ -227,10 +257,10 @@ namespace DriverApp.ViewModels
                     endpoint = ApiConstant.Auth.WeeklyOrderHistory;
                     jsonBody = JsonConvert.SerializeObject(new
                     {
-                        driverMobileNumber = "9743375766",
+                        driverMobileNumber = AppState.currentDriverMobileNumber,
                         formDate = SelectedRange.StartDate,
                         toDate = SelectedRange.EndDate,
-                        orderHistoryType = SelectedRange.orderHistoryType //"Completed"
+                        orderHistoryType = SelectedOrderHistoryType
                     });
                 }
                 else if (SelectedRange.Year > 0 && SelectedRange.Month > 0) // Month
@@ -238,10 +268,10 @@ namespace DriverApp.ViewModels
                     endpoint = ApiConstant.Auth.MonthlyOrderHistory;
                     jsonBody = JsonConvert.SerializeObject(new
                     {
-                        driverMobileNumber = "9743375766",
+                        driverMobileNumber = AppState.currentDriverMobileNumber,
                         year = SelectedRange.Year,
                         monthNumber = SelectedRange.Month,
-                        orderHistoryType = SelectedRange.orderHistoryType //"Completed"
+                        orderHistoryType = SelectedOrderHistoryType
                     });
                 }
 
@@ -250,81 +280,45 @@ namespace DriverApp.ViewModels
 
                 var result = await response.Content.ReadAsStringAsync();
 
+                Orders = new ObservableCollection<OrderItem>();
+
                 if (endpoint == ApiConstant.Auth.DayOrderHistory)
                 {
                     var dayResponse = JsonConvert.DeserializeObject<DayOrdersResponse>(result);
-                    Orders = new ObservableCollection<OrderItem>();
-                    if (dayResponse.dayOrdersList != null)
+                    if (dayResponse?.dayOrdersList != null)
                     {
                         CompletedOrders = dayResponse.completedorders;
                         TotalEarnings = dayResponse.totalearnings;
                         Message = dayResponse.message;
+
                         foreach (var o in dayResponse.dayOrdersList)
-                        {
-                            Orders.Add(new OrderItem
-                            {
-                                BookingRefNumber = o.bookingrefnumber,
-                                Date = o.date,
-                                Time = o.time,
-                                Amount = o.amount,
-                                PickupPoint = o.pickuppoint,
-                                Destination = o.destination,
-                                Status = o.status,
-                                IsMiddleDrops = o.ismiddledrops
-                            });
-                        }
+                            Orders.Add(o);
                     }
                 }
                 else if (endpoint == ApiConstant.Auth.WeeklyOrderHistory)
                 {
                     var weekResponse = JsonConvert.DeserializeObject<WeeklyOrdersResponse>(result);
-                    Orders = new ObservableCollection<OrderItem>();
-                    if (weekResponse.weeklyOrdersList != null)
+                    if (weekResponse?.weeklyOrdersList != null)
                     {
                         CompletedOrders = weekResponse.completedorders;
                         TotalEarnings = weekResponse.totalearnings;
                         Message = weekResponse.message;
 
                         foreach (var o in weekResponse.weeklyOrdersList)
-                        {
-                            Orders.Add(new OrderItem
-                            {
-                                BookingRefNumber = o.bookingrefnumber,
-                                Date = o.date,
-                                Time = o.time,
-                                Amount = o.amount,
-                                PickupPoint = o.pickuppoint,
-                                Destination = o.destination,
-                                Status = o.status,
-                                IsMiddleDrops = o.ismiddledrops
-                            });
-                        }
+                            Orders.Add(o);
                     }
                 }
                 else if (endpoint == ApiConstant.Auth.MonthlyOrderHistory)
                 {
                     var monthResponse = JsonConvert.DeserializeObject<MonthlyOrdersResponse>(result);
-                    Orders = new ObservableCollection<OrderItem>();
-                    if (monthResponse.monthlyOrdersList != null)
+                    if (monthResponse?.monthlyOrdersList != null)
                     {
                         CompletedOrders = monthResponse.completedorders;
-                       TotalEarnings = monthResponse.totalearnings;
-                       Message = monthResponse.message;
+                        TotalEarnings = monthResponse.totalearnings;
+                        Message = monthResponse.message;
 
                         foreach (var o in monthResponse.monthlyOrdersList)
-                        {
-                            Orders.Add(new OrderItem
-                            {
-                                BookingRefNumber = o.bookingrefnumber,
-                                Date = o.date,
-                                Time = o.time,
-                                Amount = o.amount,
-                                PickupPoint = o.pickuppoint,
-                                Destination = o.destination,
-                                Status = o.status,
-                                IsMiddleDrops = o.ismiddledrops
-                            });
-                        }
+                            Orders.Add(o);
                     }
                 }
             }
@@ -334,39 +328,12 @@ namespace DriverApp.ViewModels
             }
         }
 
+        #endregion
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
-
-    // Response Models
-    // public class DayResponse
-    // {
-    //     public string status { get; set; }
-    //     public string message { get; set; }
-    //     public int completedorders { get; set; }
-    //     public decimal totalearnings { get; set; }
-    //     public string date { get; set; }
-    //     public OrderItem[] dayOrdersList { get; set; }
-    // }
-
-    // public class WeekResponse
-    // {
-    //     public string status { get; set; }
-    //     public string message { get; set; }
-    //     public int completedorders { get; set; }
-    //     public decimal totalearnings { get; set; }
-    //     public OrderItem[] weeklyOrdersList { get; set; }
-    // }
-
-    // public class MonthResponse
-    // {
-    //     public string status { get; set; }
-    //     public string message { get; set; }
-    //     public int completedorders { get; set; }
-    //     public decimal totalearnings { get; set; }
-    //     public OrderItem[] monthlyOrdersList { get; set; }
-    // }
 }

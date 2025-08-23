@@ -8,6 +8,8 @@
 
     <ContentView.Resources>
         <helpers:StatusToColorConverter x:Key="StatusToColorConverter"/>
+        <!-- Keep if you need it elsewhere -->
+        <helpers:TabSelectionConverter x:Key="TabSelectionConverter"/>
     </ContentView.Resources>
 
     <VerticalStackLayout Padding="10">
@@ -17,23 +19,23 @@
                HorizontalOptions="Center"
                Margin="0,10,0,0" />
 
-        <!-- Tabs -->
+        <!-- Tabs (Day / Week / Month) -->
         <Grid ColumnDefinitions="*,*,*" Margin="0,20,0,10">
             <Button Text="Day"
                     Grid.Column="0"
-                    Clicked="OnDayClicked"
-                    TextColor="Blue"
-                    BackgroundColor="Transparent"/>
+                    BackgroundColor="Transparent"
+                    TextColor="Black"
+                    Clicked="OnDayClicked"/>
             <Button Text="Week"
                     Grid.Column="1"
-                    Clicked="OnWeekClicked"
-                    TextColor="Blue"
-                    BackgroundColor="Transparent"/>
+                    BackgroundColor="Transparent"
+                    TextColor="Black"
+                    Clicked="OnWeekClicked"/>
             <Button Text="Month"
                     Grid.Column="2"
-                    Clicked="OnMonthClicked"
-                    TextColor="Blue"
-                    BackgroundColor="Transparent"/>
+                    BackgroundColor="Transparent"
+                    TextColor="Black"
+                    Clicked="OnMonthClicked"/>
         </Grid>
 
         <!-- Date Ranges -->
@@ -82,54 +84,162 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-
         <!-- Summary Section -->
         <Frame BackgroundColor="#F5F5F5"
-            CornerRadius="12"
-            Padding="15"
-            Margin="0,20,0,10"
-            HasShadow="False">
+               CornerRadius="12"
+               Padding="15"
+               Margin="0,20,0,10"
+               HasShadow="False">
             <VerticalStackLayout Spacing="8">
                 <Label Text="Completed Orders"
-                    FontSize="14"
-                    TextColor="Gray"/>
+                       FontSize="14"
+                       TextColor="Gray"/>
                 <Label Text="{Binding CompletedOrders}"
-                    FontSize="18"
-                    FontAttributes="Bold"/>
+                       FontSize="18"
+                       FontAttributes="Bold"/>
 
                 <Label Text="Total Earnings"
-                    FontSize="14"
-                    TextColor="Gray"
-                    Margin="0,10,0,0"/>
+                       FontSize="14"
+                       TextColor="Gray"
+                       Margin="0,10,0,0"/>
                 <Label Text="{Binding TotalEarnings, StringFormat='₹{0:F2}'}"
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    TextColor="Green"/>
-
-                <Label Text="{Binding Message}"
-                    FontSize="14"
-                    TextColor="Blue"
-                    Margin="0,10,0,0"/>
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="Green"/>
             </VerticalStackLayout>
         </Frame>
 
+        <!-- Order Status Tabs (use Label + Frame so TextDecorations works) -->
+        <Grid ColumnDefinitions="*,*,*" Margin="0,10,0,10">
+
+            <!-- Completed -->
+            <Frame Grid.Column="0"
+                   Padding="8,6"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BackgroundColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeOrderTypeCommand}"
+                                          CommandParameter="Completed" />
+                </Frame.GestureRecognizers>
+
+                <Label Text="Completed"
+                       TextColor="Green"
+                       HorizontalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding SelectedOrderHistoryType}"
+                                     Value="Completed">
+                            <Setter Property="FontAttributes" Value="Bold"/>
+                            <Setter Property="TextDecorations" Value="Underline"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame"
+                                 Binding="{Binding SelectedOrderHistoryType}"
+                                 Value="Completed">
+                        <Setter Property="BackgroundColor" Value="#DFF5E1"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+            </Frame>
+
+            <!-- In Progress -->
+            <Frame Grid.Column="1"
+                   Padding="8,6"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BackgroundColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeOrderTypeCommand}"
+                                          CommandParameter="InProgress" />
+                </Frame.GestureRecognizers>
+
+                <Label Text="In Progress Rides"
+                       TextColor="#E39B00"
+                       HorizontalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding SelectedOrderHistoryType}"
+                                     Value="InProgress">
+                            <Setter Property="FontAttributes" Value="Bold"/>
+                            <Setter Property="TextDecorations" Value="Underline"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame"
+                                 Binding="{Binding SelectedOrderHistoryType}"
+                                 Value="InProgress">
+                        <Setter Property="BackgroundColor" Value="#FFF3CC"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+            </Frame>
+
+            <!-- Cancelled -->
+            <Frame Grid.Column="2"
+                   Padding="8,6"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BackgroundColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeOrderTypeCommand}"
+                                          CommandParameter="Cancelled" />
+                </Frame.GestureRecognizers>
+
+                <Label Text="Cancelled"
+                       TextColor="Red"
+                       HorizontalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding SelectedOrderHistoryType}"
+                                     Value="Cancelled">
+                            <Setter Property="FontAttributes" Value="Bold"/>
+                            <Setter Property="TextDecorations" Value="Underline"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame"
+                                 Binding="{Binding SelectedOrderHistoryType}"
+                                 Value="Cancelled">
+                        <Setter Property="BackgroundColor" Value="#FFD6D6"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+            </Frame>
+        </Grid>
+
+        <Label Text="{Binding Message}"
+               FontSize="14"
+               TextColor="Blue"
+               Margin="0,10,0,0"/>
 
         <!-- Orders List -->
-        <CollectionView ItemsSource="{Binding Orders}"
-                        Margin="0,20,0,0">
+        <CollectionView x:Name="OrdersCollection"
+                        ItemsSource="{Binding Orders}"
+                        SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="10"
-                           Margin="0,5"
+                           Margin="0,0,0,10"
                            CornerRadius="10"
                            HasShadow="True"
                            BorderColor="LightGray">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding BindingContext.OrderTappedCommand, Source={x:Reference OrdersCollection}}"
+                                CommandParameter="{Binding}" />
+                        </Frame.GestureRecognizers>
+
                         <VerticalStackLayout>
                             <HorizontalStackLayout>
                                 <Label Text="{Binding date}" FontAttributes="Bold"/>
                                 <Label Text="{Binding time}" Margin="10,0,0,0"/>
                                 <Label Text="{Binding amount, StringFormat='₹{0:F2}'}"
-                                       HorizontalOptions="End"
+                                       HorizontalOptions="EndAndExpand"
                                        FontAttributes="Bold"
                                        TextColor="Green"/>
                             </HorizontalStackLayout>
@@ -143,5 +253,6 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
     </VerticalStackLayout>
 </ContentView>
