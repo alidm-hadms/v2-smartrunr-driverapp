@@ -141,9 +141,11 @@ namespace DriverApp.ViewModels
             {
                 if (order == null) return;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 string bookingRef = order.bookingrefnumber;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
-                 await NavigationHelper.NavigateToOrderDetails(bookingRef);
+                await NavigationHelper.NavigateToOrderDetails(bookingRef);
 
                 // if (Shell.Current != null)
                 // {

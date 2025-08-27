@@ -6,12 +6,21 @@ public partial class AppShell : Shell
 {
 	public AppShell()
 	{
-		Helpers.NavigationHelper.RegisterAllRoutes(); // ✅ auto-register all pages - 14-08-25 at 23:46
 		InitializeComponent();
 
-		// Register route for LoginView
-		//Routing.RegisterRoute(nameof(LoginView), typeof(LoginView));
-		//Routing.RegisterRoute(nameof(OtpView), typeof(OtpView));
+		// 🔹 Explicitly register critical routes
+		Routing.RegisterRoute(nameof(LoginView), typeof(LoginView));
+		Routing.RegisterRoute(nameof(OtpView), typeof(OtpView));
+		
+		Routing.RegisterRoute(nameof(DashboardView), typeof(DashboardView));
+		Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
+		Routing.RegisterRoute(nameof(EarningsView), typeof(EarningsView));
+		Routing.RegisterRoute(nameof(OrderDetailsPage), typeof(OrderDetailsPage));
+		
+		Routing.RegisterRoute(nameof(WalletView), typeof(WalletView));
+
+
+		//Helpers.NavigationHelper.RegisterAllRoutes(); // ✅ auto-register all pages - 14-08-25 at 23:46
 
 		//RegisterRoute<LoginView>();
 		//RegisterRoute<DashboardPage>();

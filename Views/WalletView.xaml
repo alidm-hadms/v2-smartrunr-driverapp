@@ -1,0 +1,82 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:DriverApp.ViewModels"
+             x:Class="DriverApp.Views.WalletView">
+
+    <ContentView.BindingContext>
+        <viewmodel:WalletViewModel />
+    </ContentView.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Wallet Balance -->
+            <Frame BackgroundColor="#4CAF50" CornerRadius="15" Padding="20" HasShadow="True">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="Available Balance" FontSize="18" TextColor="White" HorizontalOptions="Center" />
+                    <Label Text="{Binding Balance, StringFormat='₹ {0:F2}'}" FontSize="32" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Alert -->
+            <Frame BackgroundColor="OrangeRed" Padding="10" CornerRadius="10" IsVisible="{Binding ShowAlert}">
+                <Label Text="{Binding AlertMessage}" TextColor="White" FontAttributes="Bold"/>
+            </Frame>
+
+            <!-- Add Money Button -->
+            <Button Text="Add Money" BackgroundColor="#2196F3" TextColor="White" Command="{Binding NavigateToTopUpCommand}" />
+
+            <!-- Transaction History -->
+            <Label Text="Top-up History" FontSize="18" FontAttributes="Bold" Margin="0,10,0,5" />
+
+            <!-- Table Header -->
+            <Grid Padding="5" ColumnDefinitions="2*,*,*,*"
+                BackgroundColor="#eeeeee">
+                <Label Text="Date" FontAttributes="Bold" Grid.Column="0"/>
+                <Label Text="Top-Up Amt" FontAttributes="Bold" Grid.Column="1" HorizontalOptions="Center"/>
+                <Label Text="Additional Added Amt" FontAttributes="Bold" Grid.Column="2" HorizontalOptions="Center"/>
+                <Label Text="Total Amount" FontAttributes="Bold" Grid.Column="3" HorizontalOptions="End"/>
+            </Grid>
+
+            <!-- Transactions CollectionView -->
+            <CollectionView ItemsSource="{Binding Transactions}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="0,5" CornerRadius="10" HasShadow="True" BackgroundColor="White">
+                            <Grid ColumnDefinitions="2*,*,*,*">
+                                
+                                <!-- Column 0: Date + PaymentId stacked -->
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="{Binding Date}" FontAttributes="Bold" />
+                                    <Label Text="{Binding PaymentId}" FontSize="12" TextColor="Gray"/>
+                                </VerticalStackLayout>
+
+                                <!-- Column 1: Top-Up Amount -->
+                                <Label Grid.Column="1" Text="{Binding TopUpAmount, StringFormat='₹ {0:F2}'}" HorizontalOptions="Center"/>
+
+                                <!-- Column 2: Additional Added Amount -->
+                                <Label Grid.Column="2" Text="{Binding AdditionalAmount, StringFormat='₹ {0:F2}'}" HorizontalOptions="Center"/>
+
+                                <!-- Column 3: Total Amount -->
+                                <Label Grid.Column="3" Text="{Binding TotalAmount, StringFormat='₹ {0:F2}'}" HorizontalOptions="End"/>
+
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+           
+             <!-- Loader -->
+        <ActivityIndicator Grid.Row="3"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="Blue"
+                           WidthRequest="40"
+                           HeightRequest="40"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

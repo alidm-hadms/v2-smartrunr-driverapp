@@ -16,6 +16,14 @@ namespace DriverApp
             public const string WeeklyOrderHistory = "DriverApp/weekly-order-history";
             public const string MonthlyOrderHistory = "DriverApp/monthly-order-history";
             public const string OrderSummaryDetails = "DriverApp/order-summary";
+
+
+        }
+        public static class Wallet
+        {
+            public const string AvailableWalletBalance = "DriverApp/display-wallet-balance";
+            public const string TopUpTransactionHistory = "DriverApp/top-up-details";
+            public const string AddMoneyToWallet = "DriverApp/add-money-to-wallet";
         }
     }
 

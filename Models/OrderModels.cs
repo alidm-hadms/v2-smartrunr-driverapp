@@ -47,15 +47,15 @@ namespace DriverApp.Models
     
     public class OrderDetailsResponse
     {
-        public string rideStatus { get; set; }
-        public string status { get; set; }
-        public string message { get; set; }
-        public string bookingRefNumber { get; set; }
-        public string rideDate { get; set; }
-        public string pickUpAddress { get; set; }
-        public string dropAddress { get; set; }
-        public string pickUpTime { get; set; }
-        public string dropTime { get; set; }
+        public string? rideStatus { get; set; }
+        public string? status { get; set; }
+        public string? message { get; set; }
+        public string? bookingRefNumber { get; set; }
+        public string? rideDate { get; set; }
+        public string? pickUpAddress { get; set; }
+        public string? dropAddress { get; set; }
+        public string? pickUpTime { get; set; }
+        public string? dropTime { get; set; }
         public double distance { get; set; }
         public decimal fareAmount { get; set; }
         public List<MiddleStop> middleStops { get; set; }
@@ -63,7 +63,7 @@ namespace DriverApp.Models
 
     public class MiddleStop
     {
-        public string middleStop { get; set; }
+        public string? middleStop { get; set; }
     }
 
 }

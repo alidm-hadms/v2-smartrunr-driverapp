@@ -83,3 +83,9 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.OtpView.xaml
 build_metadata.AdditionalFiles.TargetPath = Views/OtpView.xaml
 build_metadata.AdditionalFiles.RelativePath = Views/OtpView.xaml
+
+[/Users/macbookpro/Projects/DriverApp/Views/WalletView.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.WalletView.xaml
+build_metadata.AdditionalFiles.TargetPath = Views/WalletView.xaml
+build_metadata.AdditionalFiles.RelativePath = Views/WalletView.xaml

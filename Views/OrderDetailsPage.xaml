@@ -3,6 +3,15 @@
              x:Class="DriverApp.Views.OrderDetailsPage"
              Title="Order Details">
 
+             <!-- Toolbar back button -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back"
+                     IconImageSource="arrow_left.png"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding BackCommand}" />
+    </ContentPage.ToolbarItems>
+
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="12">
             <Label Text="Booking Reference:" FontAttributes="Bold"/>

@@ -31,7 +31,7 @@
                 HeightRequest="45"
                 Command="{Binding LoginCommand}" />
 
-                 <!-- Loader -->
+        <!-- Loader -->
         <ActivityIndicator Grid.Row="3"
                            IsRunning="{Binding IsBusy}"
                            IsVisible="{Binding IsBusy}"

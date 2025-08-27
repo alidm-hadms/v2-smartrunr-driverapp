@@ -26,11 +26,12 @@ namespace DriverApp.Views
         {
             InitializeComponent();
         }
+        
 
         // 🔹 Optional for manual navigation (if you ever use PushAsync)
         public OrderDetailsPage(string bookingRefNumber) : this()
         {
-            BookingRefNumber = bookingRefNumber; 
+            BookingRefNumber = bookingRefNumber;
         }
     }
 }

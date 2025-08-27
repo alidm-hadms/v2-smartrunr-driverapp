@@ -3,12 +3,17 @@ using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using DriverApp;
+using DriverApp.Helpers;
 using DriverApp.Models;
+using DriverApp.Views;
 
 public class OrderDetailsViewModel : INotifyPropertyChanged
 {
     private readonly HttpClient _httpClient;
+
+    public ICommand BackCommand { get; }
 
     private OrderDetailsResponse _orderDetails;
     public OrderDetailsResponse OrderDetails
@@ -27,6 +32,14 @@ public class OrderDetailsViewModel : INotifyPropertyChanged
         {
             BaseAddress = new Uri(ApiConfig.BaseUrl) // 👈 your base URL, e.g. "https://app.hadmservices.com/api/"
         };
+
+        BackCommand = new Command(async () =>
+        {
+            //await Shell.Current.GoToAsync("..");
+            await NavigationHelper.NavigateToBack();
+        });
+
+
 
         // fire async load
         _ = LoadOrderDetails(bookingRefNumber);
@@ -60,6 +73,11 @@ public class OrderDetailsViewModel : INotifyPropertyChanged
         }
     }
 
+    // 🔹 Back button handler (required for your XAML ToolbarItem)
+    // private async void OnBackClicked(object sender, EventArgs e)
+    // {
+    //     await Shell.Current.GoToAsync(".."); // go back one step
+    // }
 
 
     public event PropertyChangedEventHandler PropertyChanged;
