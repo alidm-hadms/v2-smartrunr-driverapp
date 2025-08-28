@@ -154,6 +154,10 @@ namespace DriverApp.Helpers
         {
             await Shell.Current.GoToAsync(nameof(EarningsView));
         }
+        public static async Task NavigateToToUps()
+        {
+            await Shell.Current.GoToAsync(nameof(TopUpPage));
+        }
 
         public static async Task NavigateToBack()
         {

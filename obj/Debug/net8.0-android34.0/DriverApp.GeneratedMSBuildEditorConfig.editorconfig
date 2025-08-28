@@ -84,6 +84,18 @@ build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.OtpView.xa
 build_metadata.AdditionalFiles.TargetPath = Views/OtpView.xaml
 build_metadata.AdditionalFiles.RelativePath = Views/OtpView.xaml
 
+[/Users/macbookpro/Projects/DriverApp/Views/RazorpayPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.RazorpayPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views/RazorpayPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views/RazorpayPage.xaml
+
+[/Users/macbookpro/Projects/DriverApp/Views/TopUpPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.TopUpPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views/TopUpPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views/TopUpPage.xaml
+
 [/Users/macbookpro/Projects/DriverApp/Views/WalletView.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DriverApp.Views.WalletView.xaml

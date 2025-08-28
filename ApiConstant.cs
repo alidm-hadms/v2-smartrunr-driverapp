@@ -24,6 +24,11 @@ namespace DriverApp
             public const string AvailableWalletBalance = "DriverApp/display-wallet-balance";
             public const string TopUpTransactionHistory = "DriverApp/top-up-details";
             public const string AddMoneyToWallet = "DriverApp/add-money-to-wallet";
+            public const string TopUpOptions = "DriverApp/add-balance-denominations";
+
+            public const string CreateRazorPayOrderId = "DriverApp/Create-Order-Id-For-Wallet-Recharge";
+
+            public const string ValidateRazorPaySignature = "DriverApp/Validate-Signature-For-Wallet-Recharge";
         }
     }
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <script>
+        function openCheckout(orderId, amount, key, driverMobile) {
+            var options = {
+                "key": key,
+                "amount": amount * 100,
+                "currency": "INR",
+                "name": "Driver App",
+                "description": "Wallet Top-Up",
+                "order_id": orderId,
+                "handler": function (response) {
+                    window.location.href =
+                        "razorpay-callback://success?" +
+                        "payment_id=" + response.razorpay_payment_id +
+                        "&order_id=" + response.razorpay_order_id +
+                        "&signature=" + response.razorpay_signature;
+                },
+                "prefill": {
+                    "contact": driverMobile
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp = new Razorpay(options);
+            rzp.open();
+        }
+    </script>
+</body>
+</html>

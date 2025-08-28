@@ -1,0 +1,47 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:DriverApp.ViewModels"
+             x:Class="DriverApp.Views.TopUpPage"
+             Title="Add Money">
+
+    <ContentPage.BindingContext>
+        <viewmodel:TopUpPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Wallet Balance" FontAttributes="Bold" FontSize="18"/>
+            <Label Text="{Binding WalletBalance, StringFormat='₹ {0:F2}'}" FontSize="16" TextColor="Green"/>
+
+            <Label Text="Select Amount to Add" FontAttributes="Bold" FontSize="18"/>
+
+            <!-- Recharge Options with RadioButtons -->
+            <CollectionView ItemsSource="{Binding RechargeOptions}"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedOption}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" ColumnDefinitions="Auto,*">
+                        <!-- Radio Button -->
+                        <RadioButton IsChecked="{Binding IsSelected}" Value="{Binding .}" />
+
+                        <!-- Texts -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="{Binding RechargeAmount, StringFormat='₹ {0}'}"
+                                FontAttributes="Bold" FontSize="16"/>
+                            <Label Text="{Binding AdditionalInformation}" FontSize="12" TextColor="Gray"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+
+
+            <Button Text="Pay" BackgroundColor="#2196F3" TextColor="White" Command="{Binding PayCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
